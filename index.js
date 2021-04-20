@@ -3,22 +3,12 @@ const mongoose = require('mongoose')
 const express = require('express')
 const cors = require('cors');
 const app = express();
+const dbcall = require('./dao/employee');
 
-const createEmployee = require('./routes/create');
-const getAllEmployee = require('./routes/list');
-const deleteEmployee = require('./routes/delete');
-const updateEmployee = require('./routes/update');
-const findEmployee = require('./routes/find');
+const employeeRouter = require('./routes/employee');
+const auth = require('./routes/auth')
 
-mongoose.connect(
-	process.env.DB_URL, 
-	{ 
-		useNewUrlParser: true, 
-		useUnifiedTopology: true 
-	}, 
-	() => {
-	console.log('connected to database')
-})
+dbcall();
 
 app.use(cors());
 app.use(express.json());
@@ -27,11 +17,8 @@ app.get('/', (req, res) => {
     res.send("index page works")
 })
 
-app.use('/api/employee/create', createEmployee);
-app.use('/api/employee/delete', deleteEmployee);
-app.use('/api/employee/list', getAllEmployee);
-app.use('/api/employee/update', updateEmployee);
-app.use('/api/employee/find', findEmployee);
+app.use('/api/employee', employeeRouter);
+app.use('/api/auth/', auth);
 
 app.listen(process.env.PORT || 3001, ()=>{
 	console.log("server started");
