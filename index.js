@@ -8,7 +8,15 @@ const dbcall = require('./dao/employee');
 const employeeRouter = require('./routes/employee');
 const auth = require('./routes/auth')
 
-dbcall();
+mongoose.connect(
+    process.env.DB_URL, 
+    { 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true 
+    }, 
+    () => {
+    console.log('connected to database')
+})
 
 app.use(cors());
 app.use(express.json());

@@ -17,7 +17,16 @@ const employeeSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true
-    }
+    },
+    password: {
+        type: String,
+        required: true,
+        default: "defaultPassword"
+    },
+    role: {
+        type: Number,
+        default: 0
+      }
 })
 
 module.exports = mongoose.model('Employee', employeeSchema)
